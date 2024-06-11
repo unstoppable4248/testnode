@@ -1,16 +1,21 @@
-// Importing required modules
 const express = require('express');
-
-// Creating an instance of Express
 const app = express();
+const port = 3000;
 
-// Define a route
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+// Middleware to log path, URL, and domain
+app.use((req, res, next) => {
+  console.log('Path:', req.path);
+  console.log('URL:', req.protocol + '://' + req.get('host') + req.originalUrl);
+  console.log('Domain:', req.get('host'));
+  next();
+});
+
+// Route handler for any route
+app.all('*', (req, res) => {
+  res.send('Hello, you have reached an unknown route!');
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
 });
